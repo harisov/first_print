@@ -22,7 +22,8 @@ class Board:
         for y in range(self.height):
             for x in range(self.width):
                 pygame.draw.rect(screen, pygame.Color('white'),
-                                 (x * self.cell_size + self.left, y * self.cell_size + self.top,
+                                 (x * self.cell_size + self.left,
+                                  y * self.cell_size + self.top,
                                   self.cell_size, self.cell_size), 1)
 
     def get_cell(self, mouse_pos):
@@ -44,10 +45,14 @@ class Board:
         self.draw_cell()
 
     def draw_cell(self):
-        pygame.draw.rect(screen, pygame.Color('white'), (self.x * self.cell_size + self.left,
-                                                                 self.y * self.cell_size + self.top,
-                                                                 self.cell_size, self.cell_size))
-        pygame.display.flip()
+        for y in range(self.height):
+            for x in range(self.width):
+                if self.board[self.y][self.x] == 1:
+                    pygame.draw.rect(screen, pygame.Color('white'),
+                                    (self.x * self.cell_size + self.left,
+                                    self.y * self.cell_size + self.top,
+                                    self.cell_size, self.cell_size))
+                    pygame.display.flip()
         print('asasas')
 
 class Life(Board):
@@ -71,8 +76,7 @@ if __name__ == '__main__':
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 board.get_clicked(event.pos)
-        screen.fill((0, 0, 0))
-        board.render(screen)
-        pygame.display.flip()
+            board.render(screen)
+            pygame.display.flip()
